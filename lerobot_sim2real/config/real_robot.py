@@ -1,21 +1,31 @@
 from pathlib import Path
 import gymnasium as gym
-from lerobot.common.robots.robot import Robot
-from lerobot.common.robots.so100_follower.config_so100_follower import SO100FollowerConfig
-from lerobot.common.robots.utils import make_robot_from_config
 import numpy as np
-from lerobot.common.cameras import (  # noqa: F401
-    CameraConfig,  # noqa: F401
-)
-from lerobot.common.cameras.realsense.configuration_realsense import RealSenseCameraConfig
-from lerobot.common.cameras.opencv.configuration_opencv import OpenCVCameraConfig  # noqa: F401
 
+# old lerobot version 
+# from lerobot.common.robots.robot import Robot
+# from lerobot.common.robots.so100_follower.config_so100_follower import SO100FollowerConfig
+# from lerobot.common.robots.utils import make_robot_from_config
+# from lerobot.common.cameras import CameraConfig
+# from lerobot.common.cameras.realsense.configuration_realsense import RealSenseCameraConfig
+# from lerobot.common.cameras.opencv.configuration_opencv import OpenCVCameraConfig  
 
+# lerobot 0.4.4
+
+from lerobot.robots import Robot
+from lerobot.robots import make_robot_from_config
+from lerobot.robots.so_follower.config_so_follower import SOFollowerRobotConfig
+
+from lerobot.cameras.opencv.camera_opencv import OpenCVCamera
+from lerobot.cameras.opencv.configuration_opencv import OpenCVCameraConfig
+from lerobot.cameras.realsense.camera_realsense import RealSenseCamera
+from lerobot.cameras.realsense.configuration_realsense import RealSenseCameraConfig
 
 def create_real_robot(uid: str = "so100") -> Robot:
     """Wrapper function to map string UIDS to real robot configurations. Primarily for saving a bit of code for users when they fork the repository. They can just edit the camera, id etc. settings in this one file."""
     if uid == "so100":
-        robot_config = SO100FollowerConfig(
+        robot_config = SOFollowerRobotConfig(
+        # robot_config = SO100FollowerConfig(
             port="/dev/ttyACM0",
             use_degrees=True,
             # for phone camera users you can use the commented out setting below
@@ -29,4 +39,5 @@ def create_real_robot(uid: str = "so100") -> Robot:
             id="main_follower",
         )
         real_robot = make_robot_from_config(robot_config)
+
         return real_robot
